@@ -2,6 +2,7 @@ import requests
 import csv
 import gspread
 from itertools import chain
+import json
 
 
 
@@ -11,7 +12,6 @@ old_seller_id = []
 
 
 # Webhook.site URL
-web_url='https://webhook.site/18d8b657-2e8a-4741-953c-c9959a1ead28'
 
 # funtion to find values and send
 def listchecking(old,new):
@@ -29,8 +29,32 @@ def listchecking(old,new):
 
 
 def sending_data_print(new_added,removed_item,ID):
-    data = {"Client_ID":ID,"Added":new_added,"Added-qty":len(new_added),"Removed":removed_item,"Removed-qty":len(removed_item)}
-    r = requests.post(web_url,json=data,headers={"content-type":"application/json"})
+    webhook_url='https://discord.com/api/webhooks/1167805905086185634/tN-1qmwkbB9IvDoG0ZK6dKOxy_Q1pVemFNqWqu9TJ5xeQB4ccVJBPAnKrDcSxgatzDMv'
+    
+    name = ID
+    message_content = f'Here is the update \n\n Add items: {new_added} \n\n Removed Items : {removed_item}'
+
+    data = {
+        "content": f'Client ID: {name}',
+        "embeds": [
+            {
+                "title": f"Added qty: {len(new_added)} and Removed qty: {len(removed_item)} ",
+                "description": message_content,
+                "color": 65280  # You can customize the embed color
+            }
+        ]
+    }
+
+    headers = {'Content-Type': 'application/json'}
+
+    r  = requests.post(webhook_url, json=data, headers=headers)
+
+
+
+    
+    
+    # data = {"Client_ID":ID,"Added":new_added,"Added-qty":len(new_added),"Removed":removed_item,"Removed-qty":len(removed_item)}
+    # r = requests.post(web_url,json=data,headers={"content-type":"application/json"})
     # print("Newly added Item codes ", new_added)
     # print("number of added items",len(new_added))
     # print("removed Item codes ", removed_item)
@@ -62,18 +86,17 @@ def google_sheet():
     flattened_data = flattened_data[1:]
     return flattened_data
 
-# def update_old_seller_id(new_data):
-#     global old_seller_id
-#     old_seller_id = new_data
+def update_old_seller_id(new_data):
+    global old_seller_id
+    old_seller_id = new_data
     # print("++++++++++++++++++++++++++++++++++++")
     # print("Seller Id from funtion----------------------------------------------",old_seller_id)
     # print("++++++++++++++++++++++++++++++++++++")
 
-# def update_Seller_items_dic(new_data):
-#     global Seller_items_dic
-#     Seller_items_dic = new_data
+def update_Seller_items_dic(new_data):
+    global Seller_items_dic
+    Seller_items_dic = new_data
     # print("++++++++++++++++++++++++++++++++++++")
     # print("Seller dic from funtion----------------------------------------------",Seller_items_dic)
     # print("++++++++++++++++++++++++++++++++++++")
 
-print(Seller_items_dic)

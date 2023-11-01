@@ -103,8 +103,8 @@ def repeatfuntion():
 
 repeatfuntion()
 
-# schedule.every(4).hours.do(repeatfuntion,seller_id,old_seller_id,Seller_items_dic)
-schedule.every(30).seconds.do(repeatfuntion)
+schedule.every(4).hours.do(repeatfuntion)
+# schedule.every(30).seconds.do(repeatfuntion)
 
 while True:
     schedule.run_pending()
