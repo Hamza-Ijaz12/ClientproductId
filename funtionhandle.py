@@ -1,5 +1,5 @@
 import requests
-import csv
+
 import gspread
 from itertools import chain
 import json
@@ -28,17 +28,19 @@ def listchecking(old,new):
     return new_added,removed_item
 
 
-def sending_data_print(new_added,removed_item,ID):
+def sending_data_print(new_added,removed_item,ID,storenames,storename):
     webhook_url='https://discord.com/api/webhooks/1167805905086185634/tN-1qmwkbB9IvDoG0ZK6dKOxy_Q1pVemFNqWqu9TJ5xeQB4ccVJBPAnKrDcSxgatzDMv'
+    # Mine Discord link
+    # webhook_url='https://discordapp.com/api/webhooks/1167172079586643990/P95xBuVwUg02N50Qnv7UgT_orYLWEVuADoc2OWXGWOMCDcnY_0xaN7S0fS47iwH1Fof4'
     
     name = ID
-    message_content = f'Here is the update \n\n Add items: {new_added} \n\n Removed Items : {removed_item}'
+    message_content = f'Here is the update\n\n Brand names with product count {storenames}\n\nAdded qty: {len(new_added)} and Removed qty: {len(removed_item)} \n\n Add items: {new_added} \n\n Removed Items : {removed_item}'
 
     data = {
-        "content": f'Client ID: {name}',
+        "content": f'Client Name: {storename}({name})',
         "embeds": [
             {
-                "title": f"Added qty: {len(new_added)} and Removed qty: {len(removed_item)} ",
+                "title": f"Client Name: {storename}",
                 "description": message_content,
                 "color": 65280  # You can customize the embed color
             }
@@ -61,18 +63,6 @@ def sending_data_print(new_added,removed_item,ID):
     # print("number of removed items",len(removed_item))
 
 
-def data_csv():
-    with open('list_file.csv','r') as csv_file:
-        csv_reader = csv.reader(csv_file)
-        a=[]
-        next(csv_reader)
-        for line in csv_reader:
-                a.append(str(line[0]))
-        return a
-    
-
-b=data_csv()
-print(b)
 
 
 def google_sheet():
@@ -99,4 +89,12 @@ def update_Seller_items_dic(new_data):
     # print("++++++++++++++++++++++++++++++++++++")
     # print("Seller dic from funtion----------------------------------------------",Seller_items_dic)
     # print("++++++++++++++++++++++++++++++++++++")
+
+
+def seller_brands_name(brand_dic):
+    brandslist= []
+    for item in brand_dic:
+        a=[item['brand'],item['productCount']]
+        brandslist.append(a)
+    return brandslist
 

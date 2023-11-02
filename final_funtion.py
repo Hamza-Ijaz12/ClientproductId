@@ -2,7 +2,7 @@ import requests
 import schedule
 import time
 import json
-from funtionhandle import listchecking,sending_data_print,data_csv,google_sheet,update_Seller_items_dic,update_old_seller_id
+from funtionhandle import listchecking,sending_data_print,google_sheet,update_Seller_items_dic,update_old_seller_id,seller_brands_name
 
 
 
@@ -61,8 +61,10 @@ def repeatfuntion():
             seller_dic =client_dic['sellers']
             if seller_dic:
                 res1 = next(iter(seller_dic))
+                storebrand =seller_dic[res1] ['sellerBrandStatistics']
                 # getting Only ASNI codes
                 new_data =seller_dic[res1]['asinList']
+                storename = seller_dic[res1]['sellerName']
         else:
             new_data=[]
         
@@ -84,12 +86,13 @@ def repeatfuntion():
 
         # Calling the funtion for list evaluting
         add,removed = listchecking(old_data,new_data)
-        print("===================================================")
-        print("CLient Id ",id)
-        print("add and remove length",len(add),"------------",len(removed))
-        print("===================================================")
+        brandnames = seller_brands_name(storebrand)
+        # print("===================================================")
+        # print("CLient Id ",id)
+        # print("add and remove length",len(add),"------------",len(removed))
+        # print("===================================================")
         if len(add)>0 or len(removed)>0:
-            sending_data_print(add,removed,id)
+            sending_data_print(add,removed,id,brandnames,storename)
         # Now store the new data in Dictonary 
         # print(Seller_items_dic[id])
         Seller_items_dic[id]= new_data
