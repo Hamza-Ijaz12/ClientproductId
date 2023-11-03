@@ -33,14 +33,26 @@ def sending_data_print(new_added,removed_item,ID,storenames,storename):
     # Mine Discord link
     # webhook_url='https://discordapp.com/api/webhooks/1167172079586643990/P95xBuVwUg02N50Qnv7UgT_orYLWEVuADoc2OWXGWOMCDcnY_0xaN7S0fS47iwH1Fof4'
     
+    
     name = ID
-    message_content = f'Here is the update\n\n Brand names with product count {storenames}\n\nAdded qty: {len(new_added)} and Removed qty: {len(removed_item)} \n\n Add items: {new_added} \n\n Removed Items : {removed_item}'
+    base_message = f'Here is the update\n\n Brand names with product count {storenames}\n\nAdded qty: {len(new_added)} and Removed qty: {len(removed_item)} \n\n Add items: '
+    add_items_message = ''
+    for i in range(len(new_added)):
+        add_items_message  +=f'ASNI {i} : {new_added[i]}\n'
+
+   
+    
+
+    if new_added:
+        message_content= f'{base_message} \n\n {add_items_message} '
+    else:
+        message_content = f'{base_message}No items were added.'
 
     data = {
-        "content": f'Client Name: {storename}({name})',
+        "content": f'Seller Name: {storename}({name})',
         "embeds": [
             {
-                "title": f"Client Name: {storename}",
+                "title": f"Seller Name: {storename}",
                 "description": message_content,
                 "color": 65280  # You can customize the embed color
             }
