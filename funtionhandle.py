@@ -35,7 +35,7 @@ def sending_data_print(new_added,removed_item,ID,storenames,storename):
     
     
     name = ID
-    base_message = f'Here is the update\n\n Brand names with product count {storenames}\n\nAdded qty: {len(new_added)} and Removed qty: {len(removed_item)} \n\n Add items: '
+    base_message = f'Here is the update\n\n list of brand names:\n {storenames}\n\nAdded qty: {len(new_added)} and Removed qty: {len(removed_item)} \n\n Add items: '
     add_items_message = ''
     for i in range(len(new_added)):
         add_items_message  +=f'ASNI {i} : {new_added[i]}\n'
@@ -103,10 +103,11 @@ def update_Seller_items_dic(new_data):
     # print("++++++++++++++++++++++++++++++++++++")
 
 
-def seller_brands_name(brand_dic):
-    brandslist= []
-    for item in brand_dic:
-        a=[item['brand'],item['productCount']]
-        brandslist.append(a)
-    return brandslist
 
+
+def brandnames_formating(brandlist):
+    brandname= ''
+    for item in brandlist:
+        brandname += f'Brand name & product count : {item["brand"]} -- {item["productCount"]} \n '
+    
+    return brandname

@@ -2,7 +2,7 @@ import requests
 import schedule
 import time
 import json
-from funtionhandle import listchecking,sending_data_print,google_sheet,update_Seller_items_dic,update_old_seller_id,seller_brands_name
+from funtionhandle import listchecking,sending_data_print,google_sheet,update_Seller_items_dic,update_old_seller_id,brandnames_formating
 
 
 
@@ -61,12 +61,15 @@ def repeatfuntion():
             seller_dic =client_dic['sellers']
             if seller_dic:
                 res1 = next(iter(seller_dic))
-                storebrand =seller_dic[res1] ['sellerBrandStatistics']
+                brandlist =seller_dic[res1] ['sellerBrandStatistics']
                 # getting Only ASNI codes
                 new_data =seller_dic[res1]['asinList']
                 storename = seller_dic[res1]['sellerName']
+                brandnames = brandnames_formating(brandlist)
         else:
             new_data=[]
+            brandnames=[]
+            storename = ''
         
 
 
@@ -86,7 +89,7 @@ def repeatfuntion():
 
         # Calling the funtion for list evaluting
         add,removed = listchecking(old_data,new_data)
-        brandnames = seller_brands_name(storebrand)
+        
         # print("===================================================")
         # print("CLient Id ",id)
         # print("add and remove length",len(add),"------------",len(removed))
@@ -106,8 +109,8 @@ def repeatfuntion():
 
 repeatfuntion()
 
-# schedule.every(4).hours.do(repeatfuntion)
-schedule.every(30).seconds.do(repeatfuntion)
+schedule.every(4).hours.do(repeatfuntion)
+# schedule.every(10).seconds.do(repeatfuntion)
 
 while True:
     schedule.run_pending()
